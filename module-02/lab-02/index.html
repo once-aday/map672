@@ -15,10 +15,12 @@
             font-family: sans-serif;
             color: #3d3d3d;
         }
+        /* Altering the font size for h1 elements to 1.6em, and changing the left margin buffer to 25px. em are font units, they are relative font sizes, as opposed to using pixel values. */
         h1 {
             font-size: 1.6em;
             margin-left: 25px;
         }
+        /* Altering the font size for h2 elements to 1.6em, and changing the left margin buffer to 25px. em are font units, they are relative font sizes, as opposed to using pixel values. */
         h2 {
             font-size: 1.4em;
             margin-left: 25px;
@@ -39,12 +41,14 @@
         img {
             margin-left: 25px;
         }
+        /* Selecting the box element using css. Altering the attributes of the box element. There is only one box element on the page, as opposed to instances of it.*/
         #box {
             width: 200px;
             height: 200px;
             background: #3e6b93;
             margin: 25px;
         }
+        /* Selecting all circle elements on the web page and altering their attributes. */
         .circle {
             width: 100px;
             height: 100px;
@@ -61,6 +65,7 @@
     
     <h1>Map of the World</h1>
     <h2>Experimental Edition</h2>
+    <!-- This is creating a paragraph element on the page. Inside the p element is an a element that creates a hyperlink within the paragraph. -->
     <p>It is interesting to think that maps give us super human strength. We are able to see at such large scales and in such controlled detail that would be impossible otherwise. <a href="https://baconipsum.com/">Bacon ipsum generator.</a></p>
     <div id="map"><img src="images/world2.png" alt="world map"></div>
     <p>paragraph with link: <a href="https://en.wikipedia.org/wiki/Lorem_ipsum">Lorem ipsum</a> dolor sit amet, consectetur adipiscing elit. Duis urna magna, maximus nec laoreet sit amet, dictum ultricies nibh. Ut id auctor lacus. Nam a dolor et justo luctus luctus. Duis a elit eget risus dictum vehicula id eu elit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Sed sed enim nisl.</p>
@@ -73,6 +78,7 @@
         <li><a href="https://cartodb.com/">CartoDB</a></li>
         <li><a href="http://d3js.org/">Data-Driven Documents</a></li>
     </ul>
+    <!-- This creates a div element on the web page. Its attributes are controlled by the css style rules defined in the style block-->
     <div id="box"></div>
     <div class="circle"></div>
     <div class="circle"></div>
@@ -88,6 +94,7 @@
         for(var i=0; i <= elements.length-1;i++){
         elements[i].style['border-radius'] = '20%';  
         }
+        // This block of javascript code waits for the user to click on the box element and then executes a function that styles the box element by changing the width.
         box.addEventListener('click', function() {
         this.style.width = '400px';   
         });
