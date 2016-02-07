@@ -3,7 +3,7 @@
 
 <head>
     <meta charset=utf-8 />
-    <title>Lab 03 Starter Template</title>
+    <title>Kentucky Cities</title>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
 
     <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
@@ -59,9 +59,10 @@
     <footer>
         <p>Map authored by Devin Rocco</p>
         <p>Data Sources:</p>
-        <p>http://worldpopulationreview.com/<br>http://www.latlong.net/
-            
-        </p>
+        <ul>
+            <li><a href="http://worldpopulationreview.com/">http://worldpopulationreview.com</a></li>
+            <li><a href="http://www.latlong.net/">http://www.latlong.net/</a></li>
+        </ul>
     </footer>
 
     <script>
@@ -85,12 +86,11 @@
         
         // BEGIN WRITING CODE FOR LAB 03 HERE
         
-        var city1Name = "Lexington";
-        
-        var city1Lat = 38.0297;
-        var city1Lon = -84.4947;
-        var city1Pop = 308428;
-        var city1Capital = false;
+        var city1Name = 'Lexington',  // note how you can declare multiple variables with a single
+            city1Lat = 38.0297,       // var statement and commas between them
+            city1Lon = -84.4947,
+            city1Pop = 308428,
+            city1Capital = false;
         
         var city2Name = "Frankfort";
         
@@ -106,17 +106,14 @@
         var city3Pop = 755000;
         var city3Capital = false;
         
-        var totalPop = city1Pop + city2Pop   + city3Pop;
+        var totalPop = city1Pop + city2Pop + city3Pop;
         console.log("The total population of these cities is: ",totalPop);
         
-        var averagePop = (city1Pop + city2Pop + city3Pop) / 3;
+        var averagePop = totalPop / 3;  // you've already calculated the total
         console.log("The average population of these cities is: ",averagePop);
         
-        var cities = ["Lexington", "Frankfort", "Louisville"];
+        var cities = [city1Name, city1Name, city1Name];  // may as well use variables here
         console.log(cities[2]);
-       
-        
-        // END WRITING CODE FOR LAB 03 HERE
         
         // CITY1 MARKER CODE HERE
         var city1Popup = "<b>"+city1Name+"</b><br>"
