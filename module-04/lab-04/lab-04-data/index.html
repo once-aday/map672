@@ -3,7 +3,7 @@
 
 <head>
     <meta charset=utf-8 />
-    <title>Lab 04 Starter Template</title>
+    <title>Major Wisconsin Cities</title>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
 
     <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
@@ -44,7 +44,6 @@
             font-size: 1em;
             color: #001323;
         }
-        /* Additional style rules go here! */
 
     </style>
 </head>
@@ -59,9 +58,7 @@
 
     <footer>
         <p>Map authored by Devin Rocco</p>
-        <p>Data Sources</p>
-        <p>2010 US Census
-        </p>
+        <p>Data Sources: 2010 US Census</p>
     </footer>
 
     <script>
@@ -73,17 +70,20 @@
             zoom: 7
         }
         map = L.map(targetDiv, options);
+        
         var tiles = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
 	attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012'
 });
         map.addLayer(tiles);
         
-        // begin writing/editing Lab 04 code here
-        
-        cities = ["Milwaukee", "Madison", "Green Bay"]
-        cityCoords = [[43.0500, -87.9500],[43.0667, -89.4000],[44.5133, -88.0158]]
-        cityPops = [594833, 233209, 104057]
-        cityCapital = [false, true, false]
+        var cities = ["Milwaukee", "Madison", "Green Bay"];
+        var cityCoords = [
+            [43.0500, -87.9500],  // easier to read this way
+            [43.0667, -89.4000],
+            [44.5133, -88.0158]
+        ];
+        var cityPops = [594833, 233209, 104057];
+        var cityCapital = [false, true, false];
 
         for(i = 0; i < cities.length; i++) {
             
@@ -99,8 +99,6 @@
             L.marker(cityCoords[i]).addTo(map)
                 .bindPopup(popup);
         }
-        
-        // end writing/editing Lab 04 code here
         
           
     </script>
