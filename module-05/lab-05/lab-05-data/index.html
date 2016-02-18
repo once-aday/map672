@@ -120,7 +120,7 @@
 
         for(var i = 0; i < cities.length; i++) {
 
-            var density = calcPopDensity(cityPops,cityAreas,units);  
+            var density = calcPopDensity(cityPops[i],cityAreas[i],units);  
                 
                 // call a function named calcPopDensity here, passing
                              //the city population, area, and units as arguments, and assign
@@ -141,12 +141,13 @@
     // values and return the result to where the function was called.
 function calcPopDensity(cityPop, area, units) {
     if (units = "km") {
-        area = area * 0621371
-        console.log("Converted km to mi")
-    } else {     
+        area = area * 0621371;
+        console.log("Converted km to mi");
+
+    } else {
         
     }
-    
+    console.log(cityPop,area)
     return cityPop / area
 }
 
