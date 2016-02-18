@@ -85,23 +85,28 @@
 
     var lexArea = Number(prompt("Enter data", "Enter the area of Lexington in square miles"));
     // create a second variable to collect a second city's area here
-    var lexArea2 = Number(prompt("Enter data", "Enter the area of Louisville in square miles"));
+    var louisArea = Number(prompt("Enter data", "Enter the area of Louisville in square miles"));
     // create a third variable to collect a third city's area here
-    var lexArea3 = Number(prompt("Enter data", "Enter the area of Richmond in square miles"));
-    prepareData(lexArea); // modify this function call to pass all three variables
+    var richmondArea = Number(prompt("Enter data", "Enter the area of Richmond in square miles"));
+    prepareData(lexArea, lexArea2, lexArea3); // modify this function call to pass all three variables
 
-    function prepareData(lexArea) { /* modify function to include 2 more parameters */
+    function prepareData(lexArea,louisArea,richmondArea) { /* modify function to include 2 more parameters */
 
-        var cities = ["Lexington"]; /* add 2nd and 3rd city names */
+        var cities = ["Lexington", "Louisville", "Richmond"]; /* add 2nd and 3rd city names */
         var cityCoords = [
-            [38.0297, -84.4947] 
+            [38.0297, -84.4947],
             /* include 2nd city lat/lon here */
+            [38.2500, -85.7667],
             /* include 3rd city lat/lon here */
+            [37.7447, -84.2936]
 
         ];
-        var cityPops = [308428]; /* include 2nd and 3rd city pops here */
-
-        var cityAreas = [lexArea]; /* include 2nd and 3rd city areas */
+        
+        var cityPops = [308428, 253128, 32550]; /* include 2nd and 3rd city pops here */
+        
+        // Richmond area = 19.3 mi^2, Louisville area = 399 mi^2
+        
+        var cityAreas = [lexArea, louisArea, richmondArea]; /* include 2nd and 3rd city areas */
 
        // call the mapCities function, passing the 4 arrays created above as arguments
 
