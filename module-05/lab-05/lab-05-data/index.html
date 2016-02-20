@@ -139,16 +139,14 @@
     // population, the area of a single city, and the units ('miles' or 'km') entered by
     // the user above. The function should calculate the density of the city with these two 
     // values and return the result to where the function was called.
-function calcPopDensity(cityPop, area, units) {
-    if (units = "km") {
-        area = area * 0621371;
-        console.log("Converted km to mi");
-        
-    } else {
-        
+    function calcPopDensity(cityPop, area, units) {
+        if (units = "km") {
+            area = area * 2.59;
+            console.log("Converted km to mi");
+
+        } 
+        return cityPop / area;
     }
-    return cityPop / area;
-}
 
     // end writing/editing Lab 05 code here
 
