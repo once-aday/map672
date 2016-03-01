@@ -69,8 +69,8 @@
     <script>
 
         var map = L.map('map', {
-            center: [38.96,-85.36],
-            zoom: 8,
+            center: [42.00,-74.00],
+            zoom: 10,
         });
        
         var tiles = L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
@@ -110,7 +110,16 @@
              }
         ];
         
+        for (i = 0; i < cities.length; i++) {
+            var props = cities[i].properties;
             
+            var popup = "Temp Text"
+            
+            L.marker(props.coordinates).addTo(map).bindPopup(popup)
+            
+            //console.log(cities[i]);
+            console.log(cities[i].properties);
+        }
         
           
     </script>
