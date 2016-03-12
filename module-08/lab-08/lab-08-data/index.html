@@ -49,15 +49,15 @@
 
 <body>
     <header>
-        <h1>Map Title</h1>
-        <h2>Map Subtitle</h2>
+        <h1>Solar Powered Power Plants</h1>
+        <h2>Output in MegaWatts</h2>
     </header>
 
     <div id='map'></div>
 
     <footer>
-        <p>Map authored by YOUR NAME</p>
-        <p>Additional information about the data and map goes here.</p>
+        <p>Map authored by Devin Rocco</p>
+        <p>Data Source: <br>http://www.eia.gov/electricity/data/eia923/</p>
     </footer>
 
     <script src="power-plants.js"></script>
@@ -83,26 +83,72 @@
       L.geoJson(plants, {
           pointToLayer: function(feature,latlng) {
               return L.circleMarker(latlng, {
-                 color: 'orange',
+                 color: feature.color,
                  weight: 1,
-                 fillColor: 'yellow',
+                 fillColor: feature.fillColor,
                  fillOpacity: 0.8,
                  radius: getRadius(feature.properties.capacity_mw)
               });   
-          }
+          },
+          
+          
+          filter : function (feature, layer) {
+               if (feature.properties.fuel_source.Solar) {
+                   return feature, feature.color = 'Orange', feature.fillColor = 'Yellow';
+                }
+            },
+          
+          onEachFeature : function(feature,layer) {
+            
+              
+            var keys = [];
+            for(var k in feature.properties.fuel_source) keys.push(k);
+            
+
+              
+            //  Supports up to two power plant types
+            if (keys.length > 1) {
+                var plant_out = "<b>" + keys[0] + ": </b>" + feature.properties.fuel_source[String(keys[0])] + "<br>" + "<b>" + keys[1] + ": </b>" + feature.properties.fuel_source[String(keys[1])]
+                
+                
+            } else {
+                var plant_out = "<b>" + keys[0] + ": </b>" + feature.properties.fuel_source[String(keys[0])]
+            }
+              
+              
+//            console.log(keys[0] + ": " + feature.properties.fuel_source[String(keys[0])] + "<br>" + keys[1] + ": " + feature.properties.fuel_source[String(keys[1])])
+            
+            
+            var popupContent = "<b>" + feature.properties.plant_name + "</b><br>" +  "Capacity: " + feature.properties.capacity_mw + " MW" + "<br>" + plant_out;
+              
+  
+            
+//            console.log(feature.properties.fuel_source.keys);
+              
+            layer.bindPopup(popupContent)
+              
+            layer.on('mouseover', function() {
+                // code goes in here
+                layer.setStyle({
+                    fillColor: 'red'
+                });
+            });
+            layer.on('mouseout', function() {
+                layer.setStyle({
+                    fillColor: 'yellow'
+                });
+            });
+        }
+
       }).addTo(map);
 
-      function getRadius(area) {
-            var radius = Math.sqrt(area/Math.PI);
-            return radius * .6;  
-        }   
+          function getRadius(area) {
+                var radius = Math.sqrt(area/Math.PI);
+                return radius * .6;  
+            }   
         
         
-    </script>
-function getRadius(area) {
-    var radius = Math.sqrt(area/Math.PI);
-    return radius * .6;  
-}    
+    </script>    
 </body>
 
 </html>
