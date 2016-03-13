@@ -15,24 +15,28 @@
         body {
             margin: 0;
             padding: 0;
-            background: whitesmoke;
+            background: #1f1f1f;
             font-family: Lato, sans-serif;
             color: #0D0000;
         }
         header {
             padding: 6px 10%;
+            text-align: center;
         }
         h1 {
             display: inline-block;
             margin-right: 20px;
-            color: #001323;
+            color: rgb(255, 166, 3);
+            text-shadow: 2px 2px #FF0000;
+
         }
         h2 {
             display: inline-block;
-            color: #001323;
+            color: rgb(255, 166, 3);
+            text-shadow: 2px .5px rgba(95, 95, 0, 0.29);
         }
         #map {
-            width: 80%;
+            width: 100%;
             height: 540px;
             margin: 10px auto;
         }
@@ -42,32 +46,59 @@
         }
         p {
             font-size: 1em;
-            color: #001323;
+            color: rgb(255, 166, 3);
+        }
+        .floating-box {
+            display: inline-block;
+            width: 120px;
+            height: 13px;
+            margin: 10px;
+            border: 6px groove rgb(239, 154, 0);
+            font-size: 11px;
+            font-family: "Lucida Console";
+            color: rgb(255, 216, 3);
+            text-shadow: 2px 1px #0D0000;
+            padding-top: 2px;
         }
         .legend {
             line-height: 18px;
             color: #555;
+            padding-right: 10px;
+            padding-left: 10px;
+            width: 150px;
+            height: 75px
         }
         .legend i {
-            width: 18px;
-            height: 18px;
+            width: 40px;
+            height: 30px;
             float: left;
-            margin-right: 8px;
+            margin-right: 1px;
             opacity: 0.7;
+            padding-bottom: 0px
         }
         .legend .circle {
           border-radius: 50%;
           width: 10px;
           height: 10px;
           margin-top: 8px;
+          margin-right: 10px;
+          padding-top: 0px
+
         }
+        .info {
+            color: #a28537;
+            font-family: "Lucida Console";
+            line-height: 250%;
+        }
+        
     </style>
 </head>
 
 <body>
     <header>
-        <h1>Power Plant Output</h1>
-        <h2><center>Solar Energy as a Primary or a Seconday Fuel Source</center></h2>
+        <h1><center>Solar Power Plants</center></h1>
+        <div class="floating-box">Energy Output Map</div>
+        <h2>Solar Energy Output as a Primary or a Seconday Fuel Source</h2>
     </header>
 
     <div id='map'></div>
@@ -81,8 +112,10 @@
     <script>
 
       var map = L.map('map', {
-          center: [36,-94],
+          center: [36,-97],
           zoom: 4,
+          touchZoom: false,
+          scrollWheelZoom: false,
       });
       
       var tiles = L.tileLayer('http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png', {
@@ -103,28 +136,23 @@
         legend.onAdd = function (map) {
 
             var div = L.DomUtil.create('div', 'info legend'),
-                grades = ["Solar", "Solar + Other"],
+                grades = ["Solar Only", "Solar + Other"],
                 labels = [];
 
-            // loop through our density intervals and generate a label with a colored square for each interval
+            // loop through grades and label with a colored circle for each grade
             
             for (var i = 0; i < grades.length; i++) {
                 div.innerHTML +=
                     '<i class="circle" i style="background:' + getColor(grades[i]) + '"></i> ' +
-                    grades[i] + (grades[i + 1] ? '' + '' + '<br>' : '');
-            }
+                    grades[i] + (grades[i +1] ? '  ' + '  ' + '<br>' : '');
+            };
 
             
-//            for (var i = 0; i < grades.length; i++) {
-//                div.innerHTML +=
-//                    '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
-//                    grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
-//            }
-
             return div;
         };
 
         legend.addTo(map);
+
         
         
 
@@ -145,12 +173,11 @@
                    return feature, feature.color = 'Orange', feature.fillColor = '#ff8c66';
                 } else if (feature.properties.fuel_source.Solar) {
                    return feature, feature.color = 'Orange', feature.fillColor = 'Yellow';
-                }
+                };
             },
           
           onEachFeature : function(feature,layer) {
             
-//            console.log(Object.keys(feature.properties.fuel_source).length)
             // Collect key names, e.g. power plant types, for each feature  
             var keys = [];
             for(var k in feature.properties.fuel_source) keys.push(k);
@@ -169,7 +196,6 @@
             layer.bindPopup(popupContent)
               
             layer.on('mouseover', function() {
-                // code goes in here
                 layer.setStyle({
                     fillColor: 'red'
                 });
@@ -186,13 +212,13 @@
           function getRadius(area) {
                 var radius = Math.sqrt(area/Math.PI);
                 return radius * .6;  
-            }
-        
+            };
+        // Color legend items based on label name
           function getColor(d) {
-                return d == 'Solar' ? 'Yellow' :
+                return d == 'Solar Only' ? 'Yellow' :
                        d == 'Solar + Other'  ? '#ff8c66' :
                                   '#FFEDA0';
-            }
+            };
         
         
     </script>    
