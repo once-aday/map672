@@ -93,37 +93,30 @@
           
           
           filter : function (feature, layer) {
-               if (feature.properties.fuel_source.Solar) {
+               if (feature.properties.fuel_source.Solar && Object.keys(feature.properties.fuel_source).length > 1) {
+                   return feature, feature.color = 'Orange', feature.fillColor = 'Red';
+                } else if (feature.properties.fuel_source.Solar) {
                    return feature, feature.color = 'Orange', feature.fillColor = 'Yellow';
                 }
             },
           
           onEachFeature : function(feature,layer) {
             
-              
+//            console.log(Object.keys(feature.properties.fuel_source).length)
+            // Collect key names, e.g. power plant types, for each feature  
             var keys = [];
             for(var k in feature.properties.fuel_source) keys.push(k);
-            
-
               
-            //  Supports up to two power plant types
+              
+            //  Create text for pop ups showing output of power plants; Supports up to two power plant types per popup window
             if (keys.length > 1) {
-                var plant_out = "<b>" + keys[0] + ": </b>" + feature.properties.fuel_source[String(keys[0])] + "<br>" + "<b>" + keys[1] + ": </b>" + feature.properties.fuel_source[String(keys[1])]
-                
+                var plant_out = "<b>" + keys[0] + ": </b>" + feature.properties.fuel_source[String(keys[0])] + " MW<br>" + "<b>" + keys[1] + ": </b>" + feature.properties.fuel_source[String(keys[1])] + " MW"               
                 
             } else {
-                var plant_out = "<b>" + keys[0] + ": </b>" + feature.properties.fuel_source[String(keys[0])]
-            }
-              
-              
-//            console.log(keys[0] + ": " + feature.properties.fuel_source[String(keys[0])] + "<br>" + keys[1] + ": " + feature.properties.fuel_source[String(keys[1])])
-            
-            
+                var plant_out = "<b>" + keys[0] + ": </b>" + feature.properties.fuel_source[String(keys[0])]  + " MW"
+            };
+                
             var popupContent = "<b>" + feature.properties.plant_name + "</b><br>" +  "Capacity: " + feature.properties.capacity_mw + " MW" + "<br>" + plant_out;
-              
-  
-            
-//            console.log(feature.properties.fuel_source.keys);
               
             layer.bindPopup(popupContent)
               
@@ -135,7 +128,7 @@
             });
             layer.on('mouseout', function() {
                 layer.setStyle({
-                    fillColor: 'yellow'
+                    fillColor: feature.fillColor
                 });
             });
         }
