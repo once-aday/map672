@@ -44,13 +44,24 @@
             font-size: 1em;
             color: #001323;
         }
+        .legend {
+            line-height: 18px;
+            color: #555;
+        }
+        .legend i {
+            width: 18px;
+            height: 18px;
+            float: left;
+            margin-right: 8px;
+            opacity: 0.7;
+        }
     </style>
 </head>
 
 <body>
     <header>
-        <h1>Solar Powered Power Plants</h1>
-        <h2>Output in MegaWatts</h2>
+        <h1>Power Plant Output</h1>
+        <h2><center>Solar Energy as a Primary or a Seconday Fuel Source</center></h2>
     </header>
 
     <div id='map'></div>
@@ -80,6 +91,37 @@
             return b.properties.capacity_mw - a.properties.capacity_mw;
         });
 
+        
+      var legend = L.control({position: 'bottomright'});
+
+        legend.onAdd = function (map) {
+
+            var div = L.DomUtil.create('div', 'info legend'),
+                grades = ["Solar", "Solar + Other"],
+                labels = [];
+
+            // loop through our density intervals and generate a label with a colored square for each interval
+            
+            for (var i = 0; i < grades.length; i++) {
+                div.innerHTML +=
+                    '<i style="background:' + getColor(grades[i]) + '"></i> ' +
+                    grades[i] + (grades[i + 1] ? '' + '' + '<br>' : '');
+            }
+
+            
+//            for (var i = 0; i < grades.length; i++) {
+//                div.innerHTML +=
+//                    '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
+//                    grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+//            }
+
+            return div;
+        };
+
+        legend.addTo(map);
+        
+        
+
       L.geoJson(plants, {
           pointToLayer: function(feature,latlng) {
               return L.circleMarker(latlng, {
@@ -94,7 +136,7 @@
           
           filter : function (feature, layer) {
                if (feature.properties.fuel_source.Solar && Object.keys(feature.properties.fuel_source).length > 1) {
-                   return feature, feature.color = 'Orange', feature.fillColor = 'Red';
+                   return feature, feature.color = 'Orange', feature.fillColor = '#ff8c66';
                 } else if (feature.properties.fuel_source.Solar) {
                    return feature, feature.color = 'Orange', feature.fillColor = 'Yellow';
                 }
@@ -138,7 +180,13 @@
           function getRadius(area) {
                 var radius = Math.sqrt(area/Math.PI);
                 return radius * .6;  
-            }   
+            }
+        
+          function getColor(d) {
+                return d == 'Solar' ? 'Yellow' :
+                       d == 'Solar + Other'  ? '#ff8c66' :
+                                  '#FFEDA0';
+            }
         
         
     </script>    
