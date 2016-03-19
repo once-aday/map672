@@ -75,6 +75,59 @@
       });  
       
       tiles.addTo(map);
+        
+        var commonStyles = {
+                weight: 1,
+                stroke: 1,
+                fillOpacity: .8
+        }
+        
+        var layerInfo = {
+            coalLayer: {source:"Coal", color:'#967c42'}, 
+            naturalGasLayer: {source:"Natural Gas", color:'#8cb23c'},
+            solarLayer: {source:"Solar", color:'#ff9730'}
+        };
+
+        var geoJsonLayers = {};
+
+        for(var layer in layerInfo) {     
+            geoJsonLayers[layer] = L.geoJson(plants, {
+                pointToLayer: function(feature,latlng) {
+                    return L.circleMarker(latlng, commonStyles);
+                },
+                filter: function(feature) {
+                    if(feature.properties.fuel_source[layerInfo[layer].source]) {
+                        return feature;
+                    }
+                },
+                style: function(feature) {
+                    return {
+                        color: layerInfo[layer].color,
+                        fillColor: layerInfo[layer].color,
+                        radius: getRadius(feature.properties.fuel_source[layerInfo[layer].source])
+                    } 
+                } 
+            }).addTo(map);        
+            }
+
+        function getRadius(val) {
+            var radius = Math.sqrt(val/Math.PI);
+            return radius * .8;   
+        }
+
+        var sourcesLabels = {
+            "<b style='color:#ff9730'>Solar</b>": geoJsonLayers.solarLayer,
+            "<b style='color:#967c42'>Coal</b>": geoJsonLayers.coalLayer,
+            "<b style='color:#8cb23c'>Natural Gas</b>": geoJsonLayers.naturalGasLayer
+        }
+
+        L.control.layers(null, sourcesLabels, { collapsed:false }).addTo(map);
+
+        
+        
+        
+        
+        
                   
     </script>
     
