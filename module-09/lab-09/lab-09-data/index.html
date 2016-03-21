@@ -15,57 +15,69 @@
         body {
             margin: 0;
             padding: 0;
-            background: whitesmoke;
+            background: #1f1f1f;
             font-family: Lato, sans-serif;
             color: #0D0000;
         }
         header {
             padding: 6px 10%;
+            text-align: center;
         }
         h1 {
             display: inline-block;
             margin-right: 20px;
-            color: #001323;
+            color: rgb(255, 166, 3);
+            text-shadow: 2px 2px #FF0000;
         }
         h2 {
             display: inline-block;
-            color: #001323;
+            color: rgb(255, 166, 3);
+            text-shadow: 2px 1px rgba(95, 95, 0, 0.29);
+        }
+        h3 {
+            display: inline-block;
+            color: rgb(255, 166, 3);
+            text-shadow: 1px 1px #FF0000;
         }
         #map {
-            width: 80%;
+            width: 100%;
             height: 540px;
             margin: 10px auto;
         }
         footer {
             padding: 6px 10%;
             width: 80%;
+            color: rgb(255, 166, 3);
         }
         p {
             font-size: 1em;
-            color: #001323;
+            color: rgb(255, 166, 3);
         }
     </style>
 </head>
 
 <body>
     <header>
-        <h1>Map Title</h1>
-        <h2>Map Subtitle</h2>
+        <h1>US Electric Power</h1>
+        <h2>Coal, Natural Gas &amp; Solar</h2>
+        <h3>Distance Measuring Map</h3>
     </header>
 
     <div id='map'></div>
 
     <footer>
-        <p>Map authored by YOUR NAME</p>
-        <p>Additional information about the data and map goes here.</p>
+        <p>Map authored by Devin Rocco</p>
+        <p>Data Source: <br>http://www.eia.gov/electricity/data/eia923/</p>
     </footer>
 
     <script src="power-plants.js"></script>
     <script>
 
        var map = L.map('map', {
-          center: [36,-94],
+          center: [36,-97],
           zoom: 4,
+          touchZoom: false,
+          scrollWheelZoom: false,
       });
       
       var tiles = L.tileLayer('http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png', {
@@ -124,73 +136,43 @@
 
         L.control.layers(null, sourcesLabels, { collapsed:false }).addTo(map);
 
-        console.log(geoJsonLayers);
-        
-        
-        map.on('click', function(e) {
-            geoJsonLayers.coalLayer.eachLayer(function(layer) {
-                var distance = e.latlng.distanceTo(layer.getLatLng())/1000; // distance as km
+                map.on('click', function(e) {
+                    for (var i in geoJsonLayers) {
+                        geoJsonLayers[i].eachLayer(function(layer) {
+                            var distance = e.latlng.distanceTo(layer.getLatLng())/1000; // distance as km
 
-                if(distance > 500) {
-                    layer.setStyle({
-                        stroke: false,
-                        fill: false
-                    });  
-                } else {
-                    layer.setStyle({
-                        stroke: true,
-                        fill: true  
-                    });  
-                } 
-            });
-        });
-        
-        
-//        map.on('click', function(e) {
-//            geoJsonLayers.eachLayer(function(layer) {
-//                var distance = e.latlng.distanceTo(layer.getLatLng())/1000;
-//
-//                if(distance > 500) {
-//                    layer.setStyle({
-//                        stroke: false,
-//                        fill: false
-//                    });  
-//                } else {
-//                    layer.setStyle({
-//                        stroke: true,
-//                        fill: true  
-//                    });  
-//                    layer.bindPopup("I am <b>"+distance.toLocaleString()+ 
-//                                    "km</b><br> from the click point.");
-//                } 
-//            });
-//        });
-        
-        
-//        map.on('click', function(e) {
-//            for (var i in layerInfo) {
-//                i.eachLayer(function(layer) {
-//                    var distance = e.latlng.distanceTo(layer.getLatLng())/1000; // distance as km
-//
-//                    if(distance > 500) {
-//                        layer.setStyle({
-//                            stroke: false,
-//                            fill: false
-//                        });  
-//                    } else {
-//                        layer.setStyle({
-//                            stroke: true,
-//                            fill: true  
-//                        });
-//                        layer.bindPopup("I am <b>"+distance.toLocaleString()+ 
-//                        "km</b><br> from the click point.");
-//                    } 
-//                });
-//            }
-//        });
-        
+                            if(distance > 500) {
+                                layer.setStyle({
+                                    stroke: false,
+                                    fill: false
+                                });  
+                            } else {
+                                layer.setStyle({
+                                    stroke: true,
+                                    fill: true  
+                                });
+                                            // Collect key names, e.g. power plant types, for each feature  
+                                            var keys = [];
+                                            for(var k in layer.feature.properties.fuel_source) keys.push(k);
 
-        
+
+                                            //  Create text for pop ups showing output of power plants; Supports up to two power plant types per popup window
+                                            if (keys.length > 1) {
+                                                var plant_out = "<b>" + keys[0] + ": </b>" + layer.feature.properties.fuel_source[String(keys[0])] + " MW<br>" + "<b>" + keys[1] + ": </b>" + layer.feature.properties.fuel_source[String(keys[1])] + " MW"               
+                                            } else {
+                                                var plant_out = "<b>" + keys[0] + ": </b>" + layer.feature.properties.fuel_source[String(keys[0])]  + " MW"
+                                            };
+                                
+                                    console.log(layer)
+                                   var popupContent = "<b>" + layer.feature.properties.plant_name + "</b><br>" + plant_out + "<br>" + "<b>Distance: </b>"+distance.toLocaleString()+ 
+                    " km<br> from the click point.";
+
+                                    layer.bindPopup(popupContent)
+
+                            } 
+                        });
+                    };
+                });
                   
     </script>
     
